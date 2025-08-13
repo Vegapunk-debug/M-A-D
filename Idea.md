@@ -1,8 +1,7 @@
-# Project Title
-**LEARNLOOP – A continuous cycle of learning and teaching**
+# LEARN_LOOP
+**A continuous cycle of learning and teaching**
 
-## Your Name & Roll Number
-**Rohit Nair P – 2024-B-24092006C
+## Rohit Nair P & 2024-B-24092006C
 
 ---
 
