@@ -2,11 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 const CharacterCard = ({ name, skills, wantsToLearn }) => (
-  <View style={styles.card}>
+  <View style = {styles.card}>
     <Text style={styles.name}>{name}</Text>
     <Text style={styles.subtitle}>Skills:</Text>
     <Text>{skills.join(", ")}</Text>
-    <Text style={styles.subtitle}>Wants to Learn:</Text>
+    <Text style={styles.subtitle} >Wants to Learn:</Text>
     <Text>{wantsToLearn.join(", ")}</Text>
   </View>
 )
