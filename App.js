@@ -4,14 +4,17 @@ import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SkillsProvider } from './src/context/SkillsContext';
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <AppNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <SkillsProvider>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+          <AppNavigator />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    // </SkillsProvider>
   )
 }

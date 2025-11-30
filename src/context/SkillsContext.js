@@ -8,26 +8,26 @@ const STORAGE_KEY = '@skills_data';
 
 export const SkillsProvider = ({ children }) => {
     const [skills, setSkills] = useState([]);
-    const [users] = useState(USERS)
+    const [users] = useState(USERS); 
+    const [currentUser, setCurrentUser] = useState(USERS[0]); // Default to first user (Tony Stark)
     const [loading, setLoading] = useState(true);
 
+    // Load skills from storage on mount
     useEffect(() => {
         const loadSkills = async () => {
             try {
                 const storedSkills = await AsyncStorage.getItem(STORAGE_KEY);
                 if (storedSkills) {
                     setSkills(JSON.parse(storedSkills));
-                } 
-                else {
+                } else {
+                    // First time load: use initial mock data
                     setSkills(INITIAL_SKILLS);
                     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_SKILLS));
                 }
-            } 
-            catch (error) {
+            } catch (error) {
                 console.error('Failed to load skills:', error);
                 setSkills(INITIAL_SKILLS);
-            } 
-            finally {
+            } finally {
                 setLoading(false);
             }
         };
@@ -40,14 +40,13 @@ export const SkillsProvider = ({ children }) => {
             const updatedSkills = [newSkill, ...skills];
             setSkills(updatedSkills);
             await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSkills));
-        } 
-        catch (error) {
+        } catch (error) {
             console.error('Failed to save skill:', error);
         }
     };
 
     return (
-        <SkillsContext.Provider value={{ skills, users, addSkill, loading }}>
+        <SkillsContext.Provider value={{ skills, users, addSkill, loading, currentUser }}>
             {children}
         </SkillsContext.Provider>
     );

@@ -1,62 +1,74 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { SKILLS, USERS } from '../data/data';
-import { COLORS } from '../colorPallete/colors';
+import React from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../colorPallete/colors';
+import { useSkills } from '../context/SkillsContext';
 
 export default function HomeScreen() {
+    const { skills, users } = useSkills();
 
-    const feedData = USERS.map(user => {
-        const teachSkills = SKILLS.filter(s => s.userId === user.id && s.type === 'teach')
-        const learnSkills = SKILLS.filter(s => s.userId === user.id && s.type === 'learn')
-        return {...user,
+    const feedData = users.map(user => {
+        const teachSkills = skills.filter(s => s.userId === user.id && s.type === 'teach')
+        const learnSkills = skills.filter(s => s.userId === user.id && s.type === 'learn')
+        return {
+            ...user,
             teach: teachSkills,
             learn: learnSkills
         }
     })
 
     const renderItem = ({ item }) => {
+        // Helper to join skill titles into a string
         const teachText = item.teach.map(s => s.title).join(', ');
         const learnText = item.learn.map(s => s.title).join(', ');
 
         return (
             <TouchableOpacity style={styles.card} activeOpacity={0.9}>
+                {/* Card Header: Avatar + Name */}
                 <View style={styles.cardHeader}>
                     <Image source={{ uri: item.avatar }} style={styles.avatar} />
                     <View style={styles.headerTextContainer}>
                         <Text style={styles.userName}>{item.name}</Text>
                         <Text style={styles.userBio} numberOfLines={1}>{item.bio}</Text>
                     </View>
-                    <Ionicons name="ellipsis-horizontal" size={20} color={COLORS.iconDefault} />
+                    <Ionicons name="ellipsis-horizontal" size={20} color={colors.textLight} />
                 </View>
 
+                {/* Skills Section */}
                 <View style={styles.skillsContainer}>
+                    {/* TEACHING ROW (Primary Blue) */}
                     <View style={styles.skillRow}>
-                        <View style={[styles.iconBadge, { backgroundColor: COLORS.primary + '15' }]}>
-                            <Ionicons name="school" size={16} color={COLORS.primary} />
+                        <View style={[styles.iconBadge, { backgroundColor: colors.primary + '15' }]}>
+                            <Ionicons name="school" size={16} color={colors.primary} />
                         </View>
                         <View style={styles.skillTextContainer}>
                             <Text style={styles.skillLabel}>Teaches</Text>
-                            <Text style={[styles.skillValue, { color: COLORS.primary }]}>
+                            <Text style={[styles.skillValue, { color: colors.primary }]}>
                                 {teachText || "Nothing listed"}
                             </Text>
                         </View>
                     </View>
+
+                    {/* LEARNING ROW (Secondary Pink) */}
                     <View style={styles.skillRow}>
-                        <View style={[styles.iconBadge, { backgroundColor: COLORS.secondary + '15' }]}>
-                            <Ionicons name="rocket" size={16} color={COLORS.secondary} />
+                        <View style={[styles.iconBadge, { backgroundColor: colors.secondary + '15' }]}>
+                            <Ionicons name="rocket" size={16} color={colors.secondary} />
                         </View>
                         <View style={styles.skillTextContainer}>
                             <Text style={styles.skillLabel}>Wants to Learn</Text>
-                            <Text style={[styles.skillValue, { color: COLORS.secondary }]}>
+                            <Text style={[styles.skillValue, { color: colors.secondary }]}>
                                 {learnText || "Nothing listed"}
                             </Text>
                         </View>
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.connectButton}>
+                {/* Action Button */}
+                <TouchableOpacity
+                    style={styles.connectButton}
+                    onPress={() => alert(`Request sent to ${item.name}!`)}
+                >
                     <Text style={styles.connectButtonText}>Connect</Text>
                     <Ionicons name="arrow-forward" size={16} color="#fff" style={{ marginLeft: 4 }} />
                 </TouchableOpacity>
@@ -72,7 +84,7 @@ export default function HomeScreen() {
                     <Text style={styles.headerSubtitle}>Find your perfect skill match</Text>
                 </View>
                 <TouchableOpacity style={styles.notificationButton}>
-                    <Ionicons name="notifications-outline" size={24} color={COLORS.text} />
+                    <Ionicons name="notifications-outline" size={24} color={colors.text} />
                     <View style={styles.badge} />
                 </TouchableOpacity>
             </View>
@@ -92,27 +104,27 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.background, 
+        backgroundColor: colors.background,
     },
     header: {
         paddingHorizontal: 20,
         paddingVertical: 15,
-        backgroundColor: COLORS.card,
+        backgroundColor: colors.background, // Match background to avoid card look in header if desired, or keep as card
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: COLORS.border,
+        // borderBottomWidth: 1, // Removed border for cleaner look with dark theme
+        // borderBottomColor: colors.border,
     },
     headerTitle: {
         fontSize: 24,
         fontWeight: '800',
-        color: COLORS.text, 
+        color: colors.text,
         letterSpacing: -0.5,
     },
     headerSubtitle: {
         fontSize: 13,
-        color: COLORS.textSecondary,
+        color: colors.textLight,
         fontWeight: '500',
     },
     notificationButton: {
@@ -126,23 +138,23 @@ const styles = StyleSheet.create({
         width: 8,
         height: 8,
         borderRadius: 4,
-        backgroundColor: COLORS.secondary, 
+        backgroundColor: colors.secondary,
     },
     listContent: {
         padding: 16,
     },
     card: {
-        backgroundColor: COLORS.card,
+        backgroundColor: colors.card,
         borderRadius: 20,
         padding: 18,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.03)',
-        shadowColor: "#000",
+        borderColor: colors.border,
+        shadowColor: colors.primary, // Neon glow
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.04,
+        shadowOpacity: 0.15,
         shadowRadius: 12,
-        elevation: 3,
+        elevation: 4,
     },
     cardHeader: {
         flexDirection: 'row',
@@ -153,9 +165,9 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-        backgroundColor: COLORS.border,
+        backgroundColor: colors.border,
         borderWidth: 2,
-        borderColor: COLORS.background,
+        borderColor: colors.primary, // Neon border
     },
     headerTextContainer: {
         flex: 1,
@@ -164,18 +176,20 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 17,
         fontWeight: '700',
-        color: COLORS.text,
+        color: colors.text,
     },
     userBio: {
         fontSize: 13,
-        color: COLORS.textSecondary,
+        color: colors.textLight,
         marginTop: 2,
     },
     skillsContainer: {
-        backgroundColor: COLORS.background, 
+        backgroundColor: colors.background, // Inset background
         borderRadius: 12,
         padding: 12,
         marginBottom: 16,
+        borderWidth: 1,
+        borderColor: colors.border,
     },
     skillRow: {
         flexDirection: 'row',
@@ -198,7 +212,7 @@ const styles = StyleSheet.create({
         fontSize: 11,
         textTransform: 'uppercase',
         fontWeight: '700',
-        color: COLORS.textSecondary,
+        color: colors.textLight,
         marginBottom: 2,
         letterSpacing: 0.5,
     },
@@ -208,15 +222,15 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
     connectButton: {
-        backgroundColor: COLORS.primary,
+        backgroundColor: colors.primary,
         paddingVertical: 14,
         borderRadius: 12,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: COLORS.primary,
+        shadowColor: colors.primary,
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.3,
         shadowRadius: 8,
         elevation: 4,
     },

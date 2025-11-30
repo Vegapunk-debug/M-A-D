@@ -1,12 +1,17 @@
-export const COLORS = {
-    primary: '#2F58FF', 
-    secondary: '#FF2E93', 
-    text: '#0F0C29',
-    textSecondary: '#6b6b80',
-    background: '#F5F7FF',
-    card: '#ffffff',
-    border: '#e1e4f0',
-    iconDefault: '#9ca2b8',
-    success: '#00c853',
-    error: '#d32f2f'
-  };
+export const colors = {
+  primary: '#2F58FF',
+  secondary: '#FF2E93',
+  tertiary: '#7F00FF', 
+  background: '#F5F7FF',
+  card: '#ffffff',
+  text: '#0F0C29',
+  textDark: '#0F0C29',
+  textLight: '#6b6b80',
+  white: '#FFFFFF',
+  black: '#000000',
+  success: '#00c853',
+  error: '#d32f2f',
+  border: '#e1e4f0',
+  tabBarBackground: '#ffffff',
+  tabBarInactive: '#9ca2b8',
+}
