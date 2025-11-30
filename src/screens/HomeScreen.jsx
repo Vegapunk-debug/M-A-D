@@ -19,13 +19,11 @@ export default function HomeScreen() {
     })
 
     const renderItem = ({ item }) => {
-        // Helper to join skill titles into a string
         const teachText = item.teach.map(s => s.title).join(', ');
         const learnText = item.learn.map(s => s.title).join(', ');
 
         return (
             <TouchableOpacity style={styles.card} activeOpacity={0.9}>
-                {/* Card Header: Avatar + Name */}
                 <View style={styles.cardHeader}>
                     <Image source={{ uri: item.avatar }} style={styles.avatar} />
                     <View style={styles.headerTextContainer}>
@@ -35,9 +33,7 @@ export default function HomeScreen() {
                     <Ionicons name="ellipsis-horizontal" size={20} color={colors.textLight} />
                 </View>
 
-                {/* Skills Section */}
                 <View style={styles.skillsContainer}>
-                    {/* TEACHING ROW (Primary Blue) */}
                     <View style={styles.skillRow}>
                         <View style={[styles.iconBadge, { backgroundColor: colors.primary + '15' }]}>
                             <Ionicons name="school" size={16} color={colors.primary} />
@@ -50,7 +46,7 @@ export default function HomeScreen() {
                         </View>
                     </View>
 
-                    {/* LEARNING ROW (Secondary Pink) */}
+    
                     <View style={styles.skillRow}>
                         <View style={[styles.iconBadge, { backgroundColor: colors.secondary + '15' }]}>
                             <Ionicons name="rocket" size={16} color={colors.secondary} />
@@ -64,7 +60,6 @@ export default function HomeScreen() {
                     </View>
                 </View>
 
-                {/* Action Button */}
                 <TouchableOpacity
                     style={styles.connectButton}
                     onPress={() => alert(`Request sent to ${item.name}!`)}
@@ -89,7 +84,6 @@ export default function HomeScreen() {
                 </TouchableOpacity>
             </View>
 
-            {/* Feed List */}
             <FlatList
                 data={feedData}
                 renderItem={renderItem}
@@ -109,12 +103,10 @@ const styles = StyleSheet.create({
     header: {
         paddingHorizontal: 20,
         paddingVertical: 15,
-        backgroundColor: colors.background, // Match background to avoid card look in header if desired, or keep as card
+        backgroundColor: colors.background,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // borderBottomWidth: 1, // Removed border for cleaner look with dark theme
-        // borderBottomColor: colors.border,
     },
     headerTitle: {
         fontSize: 24,
@@ -150,7 +142,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         borderWidth: 1,
         borderColor: colors.border,
-        shadowColor: colors.primary, // Neon glow
+        shadowColor: colors.primary, 
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 12,
@@ -167,7 +159,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         backgroundColor: colors.border,
         borderWidth: 2,
-        borderColor: colors.primary, // Neon border
+        borderColor: colors.primary, 
     },
     headerTextContainer: {
         flex: 1,
@@ -184,7 +176,7 @@ const styles = StyleSheet.create({
         marginTop: 2,
     },
     skillsContainer: {
-        backgroundColor: colors.background, // Inset background
+        backgroundColor: colors.background, 
         borderRadius: 12,
         padding: 12,
         marginBottom: 16,

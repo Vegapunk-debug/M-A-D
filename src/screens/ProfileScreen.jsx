@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     statNumber: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: colors.text, // Default text color, will override inline
+        color: colors.text,
     },
     statLabel: {
         fontSize: 12,
