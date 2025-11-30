@@ -32,11 +32,11 @@ Students, freelancers, hobbyists, and anyone who wants to learn or share skills 
 ---
 
 ## Technology Stack
-- **Frontend:** React Native, React Navigation  
-- **Backend:** Firebase / Node.js with Express  
-- **Database:** Firebase Firestore / MongoDB  
-- **Chat System:** Firebase Realtime Database or Socket.io  
-- **AI Matching:** TensorFlow.js / Custom recommendation logic  
+- **Frontend:** React Native, React Navigation  (Current)
+- **Backend:** Firebase / Node.js with Express  (Optional/Further Development)
+- **Database:** Firebase Firestore / MongoDB  (Optional/Further Development)
+- **Chat System:** Firebase Realtime Database or Socket.io  (Optional/Further Development)
+- **AI Matching:** TensorFlow.js / Custom recommendation logic  (Optional/Further Development)
 
 ---
 
