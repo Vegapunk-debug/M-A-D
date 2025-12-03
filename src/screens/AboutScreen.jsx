@@ -2,43 +2,44 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../colorPallete/colors';
+import { useTheme } from '../context/ThemeContext';
 
 export default function AboutScreen() {
     const navigation = useNavigation();
+    const { theme } = useTheme();
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
+        <View style={[styles.container, { backgroundColor: theme.background }]}>
+            <View style={[styles.header, { backgroundColor: theme.card, borderBottomColor: theme.border }]}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Ionicons name="arrow-back" size={24} color={colors.text} />
+                    <Ionicons name="arrow-back" size={24} color={theme.text} />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>About Learn Loop</Text>
+                <Text style={[styles.headerTitle, { color: theme.text }]}>About Learn Loop</Text>
             </View>
             <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.description}>
+                <Text style={[styles.description, { color: theme.text }]}>
                     Learn Loop is a community-driven platform designed to connect people who want to teach with those who want to learn.
                 </Text>
 
-                <Text style={styles.sectionTitle}>Our Mission</Text>
-                <Text style={styles.text}>
+                <Text style={[styles.sectionTitle, { color: theme.text }]}>Our Mission</Text>
+                <Text style={[styles.text, { color: theme.textLight }]}>
                     We believe that everyone has something to teach and something to learn. Our mission is to democratize education by creating a peer-to-peer network where skills are exchanged freely and connections are made based on shared interests.
                 </Text>
 
-                <Text style={styles.sectionTitle}>How It Works</Text>
-                <Text style={styles.text}>
-                    1. <Text style={styles.bold}>Create a Profile:</Text> Showcase your skills and interests.{'\n'}
-                    2. <Text style={styles.bold}>Post a Skill:</Text> Share what you can teach or what you want to learn.{'\n'}
-                    3. <Text style={styles.bold}>Connect:</Text> Find others who match your learning or teaching goals and start a conversation.
+                <Text style={[styles.sectionTitle, { color: theme.text }]}>How It Works</Text>
+                <Text style={[styles.text, { color: theme.textLight }]}>
+                    1. <Text style={[styles.bold, { color: theme.primary }]}>Create a Profile:</Text> Showcase your skills and interests.{'\n'}
+                    2. <Text style={[styles.bold, { color: theme.primary }]}>Post a Skill:</Text> Share what you can teach or what you want to learn.{'\n'}
+                    3. <Text style={[styles.bold, { color: theme.primary }]}>Connect:</Text> Find others who match your learning or teaching goals and start a conversation.
                 </Text>
 
-                <Text style={styles.sectionTitle}>Contact Us</Text>
-                <Text style={styles.text}>
+                <Text style={[styles.sectionTitle, { color: theme.text }]}>Contact Us</Text>
+                <Text style={[styles.text, { color: theme.textLight }]}>
                     Have questions or feedback? Reach out to us at support@learnloop.com.
                 </Text>
 
                 <View style={styles.footer}>
-                    <Text style={styles.footerText}>© 2025 Learn Loop. All rights reserved.</Text>
+                    <Text style={[styles.footerText, { color: theme.textLight }]}>© 2025 Learn Loop. All rights reserved.</Text>
                 </View>
             </ScrollView>
         </View>
@@ -48,15 +49,12 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
     },
     header: {
         paddingTop: 60,
         paddingBottom: 20,
         paddingHorizontal: 20,
-        backgroundColor: colors.card,
         borderBottomWidth: 1,
-        borderBottomColor: colors.border,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -66,40 +64,34 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: colors.text,
     },
     content: {
         padding: 20,
     },
     description: {
         fontSize: 16,
-        color: colors.text,
         lineHeight: 24,
         marginBottom: 20,
     },
     sectionTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: colors.text,
         marginTop: 10,
         marginBottom: 10,
     },
     text: {
         fontSize: 15,
-        color: colors.textSecondary || colors.textLight,
         lineHeight: 22,
         marginBottom: 10,
     },
     bold: {
         fontWeight: 'bold',
-        color: colors.primary,
     },
     footer: {
         marginTop: 40,
         alignItems: 'center',
     },
     footerText: {
-        color: colors.textLight,
         fontSize: 12,
     },
 });

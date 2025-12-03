@@ -1,29 +1,30 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../colorPallete/colors';
 import { USERS } from '../data/data';
+import { useTheme } from '../context/ThemeContext';
 
 export default function SkillCard({ skill, onPress }) {
     const user = USERS.find((u) => u.id === skill.userId);
     const isTeach = skill.type === 'teach';
+    const { theme } = useTheme();
 
     return (
-        <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
+        <TouchableOpacity style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border, shadowColor: theme.primary }]} onPress={onPress} activeOpacity={0.9}>
             <View style={styles.header}>
                 <Image source={{ uri: user?.avatar }} style={styles.avatar} />
                 <View style={styles.userInfo}>
-                    <Text style={styles.userName}>{user?.name}</Text>
-                    <Text style={styles.userBio} numberOfLines={1}>{user?.bio}</Text>
+                    <Text style={[styles.userName, { color: theme.text }]}>{user?.name}</Text>
+                    <Text style={[styles.userBio, { color: theme.textLight }]} numberOfLines={1}>{user?.bio}</Text>
                 </View>
-                <View style={[styles.badge, isTeach ? styles.badgeTeach : styles.badgeLearn]}>
-                    <Text style={styles.badgeText}>{isTeach ? 'TEACHING' : 'LEARNING'}</Text>
+                <View style={[styles.badge, isTeach ? { backgroundColor: theme.primary + '15', borderColor: theme.primary } : { backgroundColor: theme.secondary + '15', borderColor: theme.secondary }]}>
+                    <Text style={[styles.badgeText, { color: theme.text }]}>{isTeach ? 'TEACHING' : 'LEARNING'}</Text>
                 </View>
             </View>
 
             <View style={styles.content}>
-                <Text style={styles.title}>{skill.title}</Text>
-                <Text style={styles.category}>{skill.category}</Text>
-                <Text style={styles.description} numberOfLines={3}>{skill.description}</Text>
+                <Text style={[styles.title, { color: theme.text }]}>{skill.title}</Text>
+                <Text style={[styles.category, { color: theme.tertiary }]}>{skill.category}</Text>
+                <Text style={[styles.description, { color: theme.text }]} numberOfLines={3}>{skill.description}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -31,17 +32,14 @@ export default function SkillCard({ skill, onPress }) {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: colors.card,
         borderRadius: 16,
         padding: 16,
         marginBottom: 16,
-        shadowColor: colors.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 12,
         elevation: 5,
         borderWidth: 1,
-        borderColor: colors.border,
     },
     header: {
         flexDirection: 'row',
@@ -60,11 +58,9 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 16,
         fontWeight: '600',
-        color: colors.text,
     },
     userBio: {
         fontSize: 12,
-        color: colors.textLight,
     },
     badge: {
         paddingHorizontal: 10,
@@ -72,18 +68,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
     },
-    badgeTeach: {
-        backgroundColor: colors.primary + '15', 
-        borderColor: colors.primary,
-    },
-    badgeLearn: {
-        backgroundColor: colors.secondary + '15',
-        borderColor: colors.secondary,
-    },
     badgeText: {
         fontSize: 10,
         fontWeight: '700',
-        color: colors.text,
         letterSpacing: 0.5,
     },
     content: {
@@ -92,20 +79,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: '700',
-        color: colors.text,
         marginBottom: 6,
     },
     category: {
         fontSize: 12,
         fontWeight: '700',
-        color: colors.tertiary, 
         marginBottom: 8,
         textTransform: 'uppercase',
         letterSpacing: 1,
     },
     description: {
         fontSize: 14,
-        color: colors.text,
         lineHeight: 20,
         opacity: 0.8,
     },

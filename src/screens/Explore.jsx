@@ -2,13 +2,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { colors } from '../colorPallete/colors';
 import { useSkills } from '../context/SkillsContext';
+import { useTheme } from '../context/ThemeContext';
 
 const CATEGORIES = ['All', 'Programming', 'AI', 'Systems', 'Science', 'Cloud', 'Mobile', 'Data'];
 
 export default function Explore() {
     const { skills, users } = useSkills();
+    const { theme } = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -23,12 +24,14 @@ export default function Explore() {
         <TouchableOpacity
             style={[
                 styles.categoryChip,
-                selectedCategory === item && styles.categoryChipActive
+                { backgroundColor: theme.card, borderColor: theme.border },
+                selectedCategory === item && { backgroundColor: theme.primary, borderColor: theme.primary }
             ]}
             onPress={() => setSelectedCategory(item)}
         >
             <Text style={[
                 styles.categoryText,
+                { color: theme.textLight },
                 selectedCategory === item && styles.categoryTextActive
             ]}>{item}</Text>
         </TouchableOpacity>
@@ -37,21 +40,21 @@ export default function Explore() {
     const renderSkillItem = ({ item }) => {
         const user = users.find(u => u.id === item.userId);
         return (
-            <TouchableOpacity style={styles.resultCard} activeOpacity={0.7}>
+            <TouchableOpacity style={[styles.resultCard, { backgroundColor: theme.card, borderColor: theme.border }]} activeOpacity={0.7}>
                 <View style={styles.resultHeader}>
-                    <View style={styles.iconContainer}>
+                    <View style={[styles.iconContainer, { backgroundColor: theme.background, borderColor: theme.border }]}>
                         <Ionicons
                             name={item.type === 'teach' ? 'school' : 'rocket'}
                             size={20}
-                            color={item.type === 'teach' ? colors.primary : colors.secondary}
+                            color={item.type === 'teach' ? theme.primary : theme.secondary}
                         />
                     </View>
                     <View style={styles.resultTextContent}>
-                        <Text style={styles.resultTitle}>{item.title}</Text>
-                        <Text style={styles.resultUser}>by {user?.name}</Text>
+                        <Text style={[styles.resultTitle, { color: theme.text }]}>{item.title}</Text>
+                        <Text style={[styles.resultUser, { color: theme.textLight }]}>by {user?.name}</Text>
                     </View>
                     <View style={styles.arrowContainer}>
-                        <Ionicons name="chevron-forward" size={20} color={colors.textLight} />
+                        <Ionicons name="chevron-forward" size={20} color={theme.textLight} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -59,15 +62,15 @@ export default function Explore() {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.background }]}>
             <View style={styles.header}>
-                <Text style={styles.title}>Explore</Text>
-                <View style={styles.searchContainer}>
-                    <Ionicons name="search" size={20} color={colors.textLight} style={styles.searchIcon} />
+                <Text style={[styles.title, { color: theme.text }]}>Explore</Text>
+                <View style={[styles.searchContainer, { backgroundColor: theme.card, borderColor: theme.border, shadowColor: theme.primary }]}>
+                    <Ionicons name="search" size={20} color={theme.textLight} style={styles.searchIcon} />
                     <TextInput
                         placeholder="What do you want to learn?"
-                        style={styles.input}
-                        placeholderTextColor={colors.textLight}
+                        style={[styles.input, { color: theme.text }]}
+                        placeholderTextColor={theme.textLight}
                         value={searchQuery}
                         onChangeText={setSearchQuery}
                     />
@@ -86,7 +89,7 @@ export default function Explore() {
             </View>
 
             <View style={styles.resultsContainer}>
-                <Text style={styles.sectionTitle}>
+                <Text style={[styles.sectionTitle, { color: theme.text }]}>
                     {searchQuery ? 'Search Results' : 'Trending Skills'}
                 </Text>
                 <FlatList
@@ -104,7 +107,6 @@ export default function Explore() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
         paddingTop: 60,
     },
     header: {
@@ -114,18 +116,14 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: '800',
-        color: colors.text,
         marginBottom: 20,
     },
     searchContainer: {
-        backgroundColor: colors.card,
         borderRadius: 16,
         padding: 12,
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: colors.border,
-        shadowColor: colors.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
         shadowRadius: 12,
@@ -137,7 +135,6 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: 16,
-        color: colors.text,
     },
     categoriesContainer: {
         marginBottom: 20,
@@ -150,17 +147,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 25,
-        backgroundColor: colors.card,
         borderWidth: 1,
-        borderColor: colors.border,
         marginRight: 8,
     },
-    categoryChipActive: {
-        backgroundColor: colors.primary,
-        borderColor: colors.primary,
-    },
     categoryText: {
-        color: colors.textLight,
         fontWeight: '600',
         fontSize: 14,
     },
@@ -175,19 +165,16 @@ const styles = StyleSheet.create({
     sectionTitle: {
         fontSize: 18,
         fontWeight: '700',
-        color: colors.text,
         marginBottom: 15,
     },
     resultsList: {
         paddingBottom: 20,
     },
     resultCard: {
-        backgroundColor: colors.card,
         borderRadius: 16,
         padding: 16,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: colors.border,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -200,12 +187,10 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 12,
-        backgroundColor: colors.background,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 12,
         borderWidth: 1,
-        borderColor: colors.border,
     },
     resultTextContent: {
         flex: 1,
@@ -213,12 +198,10 @@ const styles = StyleSheet.create({
     resultTitle: {
         fontSize: 16,
         fontWeight: '700',
-        color: colors.text,
         marginBottom: 2,
     },
     resultUser: {
         fontSize: 12,
-        color: colors.textLight,
     },
     arrowContainer: {
         marginLeft: 8,

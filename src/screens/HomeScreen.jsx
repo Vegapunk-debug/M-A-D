@@ -1,12 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, Image, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from '../colorPallete/colors';
 import { useSkills } from '../context/SkillsContext';
+import { useTheme } from '../context/ThemeContext';
+import { useNotifications } from '../context/NotificationContext';
 
 export default function HomeScreen() {
     const { skills, users } = useSkills();
+    const { theme } = useTheme();
+    const { notificationsEnabled, unreadCount, notifications, markAllAsRead } = useNotifications();
+    const [showNotifications, setShowNotifications] = useState(false);
 
     const feedData = users.map(user => {
         const teachSkills = skills.filter(s => s.userId === user.id && s.type === 'teach')
@@ -18,42 +22,49 @@ export default function HomeScreen() {
         }
     })
 
+    const handleNotificationPress = () => {
+        if (!showNotifications && unreadCount > 0) {
+            markAllAsRead();
+        }
+        setShowNotifications(!showNotifications);
+    };
+
     const renderItem = ({ item }) => {
         const teachText = item.teach.map(s => s.title).join(', ');
         const learnText = item.learn.map(s => s.title).join(', ');
 
         return (
-            <TouchableOpacity style={styles.card} activeOpacity={0.9}>
+            <TouchableOpacity style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border, shadowColor: theme.primary }]} activeOpacity={0.9}>
                 <View style={styles.cardHeader}>
-                    <Image source={{ uri: item.avatar }} style={styles.avatar} />
+                    <Image source={{ uri: item.avatar }} style={[styles.avatar, { backgroundColor: theme.border, borderColor: theme.primary }]} />
                     <View style={styles.headerTextContainer}>
-                        <Text style={styles.userName}>{item.name}</Text>
-                        <Text style={styles.userBio} numberOfLines={1}>{item.bio}</Text>
+                        <Text style={[styles.userName, { color: theme.text }]}>{item.name}</Text>
+                        <Text style={[styles.userBio, { color: theme.textLight }]} numberOfLines={1}>{item.bio}</Text>
                     </View>
-                    <Ionicons name="ellipsis-horizontal" size={20} color={colors.textLight} />
+                    <Ionicons name="ellipsis-horizontal" size={20} color={theme.textLight} />
                 </View>
 
-                <View style={styles.skillsContainer}>
+                <View style={[styles.skillsContainer, { backgroundColor: theme.background, borderColor: theme.border }]}>
                     <View style={styles.skillRow}>
-                        <View style={[styles.iconBadge, { backgroundColor: colors.primary + '15' }]}>
-                            <Ionicons name="school" size={16} color={colors.primary} />
+                        <View style={[styles.iconBadge, { backgroundColor: theme.primary + '15' }]}>
+                            <Ionicons name="school" size={16} color={theme.primary} />
                         </View>
                         <View style={styles.skillTextContainer}>
-                            <Text style={styles.skillLabel}>Teaches</Text>
-                            <Text style={[styles.skillValue, { color: colors.primary }]}>
+                            <Text style={[styles.skillLabel, { color: theme.textLight }]}>Teaches</Text>
+                            <Text style={[styles.skillValue, { color: theme.primary }]}>
                                 {teachText || "Nothing listed"}
                             </Text>
                         </View>
                     </View>
 
-    
+
                     <View style={styles.skillRow}>
-                        <View style={[styles.iconBadge, { backgroundColor: colors.secondary + '15' }]}>
-                            <Ionicons name="rocket" size={16} color={colors.secondary} />
+                        <View style={[styles.iconBadge, { backgroundColor: theme.secondary + '15' }]}>
+                            <Ionicons name="rocket" size={16} color={theme.secondary} />
                         </View>
                         <View style={styles.skillTextContainer}>
-                            <Text style={styles.skillLabel}>Wants to Learn</Text>
-                            <Text style={[styles.skillValue, { color: colors.secondary }]}>
+                            <Text style={[styles.skillLabel, { color: theme.textLight }]}>Wants to Learn</Text>
+                            <Text style={[styles.skillValue, { color: theme.secondary }]}>
                                 {learnText || "Nothing listed"}
                             </Text>
                         </View>
@@ -61,7 +72,7 @@ export default function HomeScreen() {
                 </View>
 
                 <TouchableOpacity
-                    style={styles.connectButton}
+                    style={[styles.connectButton, { backgroundColor: theme.primary, shadowColor: theme.primary }]}
                     onPress={() => alert(`Request sent to ${item.name}!`)}
                 >
                     <Text style={styles.connectButtonText}>Connect</Text>
@@ -72,16 +83,18 @@ export default function HomeScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+            <View style={[styles.header, { backgroundColor: theme.background }]}>
                 <View>
-                    <Text style={styles.headerTitle}>Learn Loop</Text>
-                    <Text style={styles.headerSubtitle}>Find your perfect skill match</Text>
+                    <Text style={[styles.headerTitle, { color: theme.text }]}>Learn Loop</Text>
+                    <Text style={[styles.headerSubtitle, { color: theme.textLight }]}>Find your perfect skill match</Text>
                 </View>
-                <TouchableOpacity style={styles.notificationButton}>
-                    <Ionicons name="notifications-outline" size={24} color={colors.text} />
-                    <View style={styles.badge} />
-                </TouchableOpacity>
+                {notificationsEnabled && (
+                    <TouchableOpacity style={styles.notificationButton} onPress={handleNotificationPress}>
+                        <Ionicons name="notifications-outline" size={24} color={theme.text} />
+                        {unreadCount > 0 && <View style={[styles.badge, { backgroundColor: theme.secondary }]} />}
+                    </TouchableOpacity>
+                )}
             </View>
 
             <FlatList
@@ -91,6 +104,45 @@ export default function HomeScreen() {
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
             />
+
+            <Modal
+                transparent={true}
+                visible={showNotifications}
+                animationType="fade"
+                onRequestClose={() => setShowNotifications(false)}
+            >
+                <TouchableWithoutFeedback onPress={() => setShowNotifications(false)}>
+                    <View style={styles.modalOverlay}>
+                        <TouchableWithoutFeedback>
+                            <View style={[styles.notificationPopup, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                                <Text style={[styles.popupTitle, { color: theme.text }]}>Notifications</Text>
+                                {notifications.length === 0 ? (
+                                    <Text style={[styles.emptyText, { color: theme.textLight }]}>No new notifications</Text>
+                                ) : (
+                                    <FlatList
+                                        data={notifications}
+                                        keyExtractor={item => item.id}
+                                        renderItem={({ item }) => (
+                                            <View style={[styles.notificationItem, { borderBottomColor: theme.border }]}>
+                                                <View style={[styles.notificationIcon, { backgroundColor: theme.primary + '20' }]}>
+                                                    <Ionicons name="information" size={20} color={theme.primary} />
+                                                </View>
+                                                <View style={styles.notificationContent}>
+                                                    <Text style={[styles.notificationMessage, { color: theme.text }]}>{item.message}</Text>
+                                                    <Text style={[styles.notificationTime, { color: theme.textLight }]}>
+                                                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        )}
+                                        style={{ maxHeight: 300 }}
+                                    />
+                                )}
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
         </SafeAreaView>
     )
 };
@@ -98,25 +150,22 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
     },
     header: {
         paddingHorizontal: 20,
         paddingVertical: 15,
-        backgroundColor: colors.background,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        zIndex: 1,
     },
     headerTitle: {
         fontSize: 24,
         fontWeight: '800',
-        color: colors.text,
         letterSpacing: -0.5,
     },
     headerSubtitle: {
         fontSize: 13,
-        color: colors.textLight,
         fontWeight: '500',
     },
     notificationButton: {
@@ -130,19 +179,15 @@ const styles = StyleSheet.create({
         width: 8,
         height: 8,
         borderRadius: 4,
-        backgroundColor: colors.secondary,
     },
     listContent: {
         padding: 16,
     },
     card: {
-        backgroundColor: colors.card,
         borderRadius: 20,
         padding: 18,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: colors.border,
-        shadowColor: colors.primary, 
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 12,
@@ -157,9 +202,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,
-        backgroundColor: colors.border,
         borderWidth: 2,
-        borderColor: colors.primary, 
     },
     headerTextContainer: {
         flex: 1,
@@ -168,20 +211,16 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 17,
         fontWeight: '700',
-        color: colors.text,
     },
     userBio: {
         fontSize: 13,
-        color: colors.textLight,
         marginTop: 2,
     },
     skillsContainer: {
-        backgroundColor: colors.background, 
         borderRadius: 12,
         padding: 12,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: colors.border,
     },
     skillRow: {
         flexDirection: 'row',
@@ -204,7 +243,6 @@ const styles = StyleSheet.create({
         fontSize: 11,
         textTransform: 'uppercase',
         fontWeight: '700',
-        color: colors.textLight,
         marginBottom: 2,
         letterSpacing: 0.5,
     },
@@ -214,13 +252,11 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
     connectButton: {
-        backgroundColor: colors.primary,
         paddingVertical: 14,
         borderRadius: 12,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: colors.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 8,
@@ -230,5 +266,61 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: '700',
         fontSize: 15,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-end',
+        paddingTop: 60,
+        paddingRight: 20,
+    },
+    notificationPopup: {
+        width: 300,
+        borderRadius: 16,
+        borderWidth: 1,
+        padding: 16,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    popupTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 12,
+    },
+    emptyText: {
+        textAlign: 'center',
+        padding: 20,
+        fontStyle: 'italic',
+    },
+    notificationItem: {
+        flexDirection: 'row',
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+    },
+    notificationIcon: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+    notificationContent: {
+        flex: 1,
+    },
+    notificationMessage: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginBottom: 4,
+    },
+    notificationTime: {
+        fontSize: 10,
     },
 });

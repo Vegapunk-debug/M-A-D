@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { colors } from '../colorPallete/colors';
+import { useTheme } from '../context/ThemeContext';
 import AboutScreen from '../screens/AboutScreen';
 import AddSkillScreen from '../screens/AddSkillScreen';
 import Explore from '../screens/Explore';
@@ -24,14 +24,16 @@ const ProfileStackScreen = () => {
 };
 
 const AppNavigator = () => {
+    const { theme } = useTheme();
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,
-                tabBarActiveTintColor: colors.primary,
-                tabBarInactiveTintColor: colors.tabBarInactive,
+                tabBarActiveTintColor: theme.primary,
+                tabBarInactiveTintColor: theme.tabBarInactive,
                 tabBarStyle: {
-                    backgroundColor: colors.tabBarBackground,
+                    backgroundColor: theme.tabBarBackground,
                     borderTopWidth: 0,
                     elevation: 0,
                     height: 60,
