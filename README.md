@@ -90,7 +90,7 @@ Users can list skills they can **teach** and skills they want to **learn**. Our 
 
 ---
 
-## 🧠 Skill Matching Logic
+## 🧠 Skill Matching Logic (Working On it)
 
 We don't just match keywords; we match intents. Here is how the **LearnLoop Algorithm** processes connections:
 
