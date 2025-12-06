@@ -18,7 +18,7 @@
   <p align="center">
     The community-driven ecosystem creates an endless loop of teaching, learning, and improving.
     <br />
-    <a href="#demo"><strong>View Demo »</strong></a>
+    <!-- <a href="#demo"><strong>View Demo »</strong></a> -->
     <br />
     <br />
     <a href="https://github.com/your-username/learnloop/issues">Report Bug</a>
