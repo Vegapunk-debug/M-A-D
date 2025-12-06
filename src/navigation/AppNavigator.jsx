@@ -13,12 +13,21 @@ import SettingsScreen from '../screens/SettingsScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+import PrivacySecurityScreen from '../screens/PrivacySecurityScreen';
+import HelpCenterScreen from '../screens/HelpCenterScreen';
+import TermsPoliciesScreen from '../screens/TermsPoliciesScreen';
+import SubscriptionScreen from '../screens/SubscriptionScreen';
+
 const ProfileStackScreen = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="ProfileMain" component={ProfileScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="About" component={AboutScreen} />
+            <Stack.Screen name="PrivacySecurity" component={PrivacySecurityScreen} />
+            <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+            <Stack.Screen name="TermsPolicies" component={TermsPoliciesScreen} />
+            <Stack.Screen name="Subscription" component={SubscriptionScreen} />
         </Stack.Navigator>
     );
 };

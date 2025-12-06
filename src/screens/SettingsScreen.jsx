@@ -11,7 +11,11 @@ export default function SettingsScreen() {
     const { notificationsEnabled, setNotificationsEnabled } = useNotifications();
 
     const renderSettingItem = (icon, title, type = 'arrow', value = null, onToggle = null) => (
-        <TouchableOpacity style={[styles.item, { borderBottomColor: theme.border }]} activeOpacity={type === 'switch' ? 1 : 0.7}>
+        <TouchableOpacity
+            style={[styles.item, { borderBottomColor: theme.border }]}
+            activeOpacity={type === 'switch' ? 1 : 0.7}
+            onPress={type !== 'switch' ? onToggle : null}
+        >
             <View style={styles.itemLeft}>
                 <View style={[styles.iconContainer, { backgroundColor: theme.iconBackground || theme.background }]}>
                     <Ionicons name={icon} size={20} color={theme.primary} />
@@ -51,14 +55,14 @@ export default function SettingsScreen() {
                 <Text style={[styles.sectionTitle, { color: theme.textLight }]}>Account</Text>
                 <View style={[styles.section, { backgroundColor: theme.card, borderColor: theme.border }]}>
                     {renderSettingItem('person', 'Edit Profile')}
-                    {renderSettingItem('lock-closed', 'Privacy & Security')}
-                    {renderSettingItem('card', 'Subscription')}
+                    {renderSettingItem('lock-closed', 'Privacy & Security', 'arrow', null, () => navigation.navigate('PrivacySecurity'))}
+                    {renderSettingItem('card', 'Subscription', 'arrow', null, () => navigation.navigate('Subscription'))}
                 </View>
 
                 <Text style={[styles.sectionTitle, { color: theme.textLight }]}>Support</Text>
                 <View style={[styles.section, { backgroundColor: theme.card, borderColor: theme.border }]}>
-                    {renderSettingItem('help-circle', 'Help Center')}
-                    {renderSettingItem('document-text', 'Terms & Policies')}
+                    {renderSettingItem('help-circle', 'Help Center', 'arrow', null, () => navigation.navigate('HelpCenter'))}
+                    {renderSettingItem('document-text', 'Terms & Policies', 'arrow', null, () => navigation.navigate('TermsPolicies'))}
                 </View>
 
                 <TouchableOpacity style={[styles.signOutButton, { backgroundColor: theme.card, borderColor: theme.error }]}>

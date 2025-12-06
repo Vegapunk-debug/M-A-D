@@ -1,4 +1,5 @@
 <a name="readme-top"></a>
+<video src="src/LearnLoopApp.mp4" controls width="600"></video>
 
 <div align="center">
 
