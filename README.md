@@ -1,5 +1,7 @@
 <a name="readme-top"></a>
-<video src="src/LearnLoopApp.mp4" controls width="600"></video>
+<div align="center">
+  <h3><a href="https://drive.google.com/file/d/1LeJYfsvmNM7ObHaHFMIJdd2UU866GHOB/view?usp=sharing" target="_blank">🎥 Watch Demo Video</a></h3>
+</div>
 
 <div align="center">
 
