@@ -1,6 +1,8 @@
 <a name="readme-top"></a>
 <div align="center">
-  <h3><a href="https://drive.google.com/file/d/1LeJYfsvmNM7ObHaHFMIJdd2UU866GHOB/view?usp=sharing" target="_blank">🎥 Watch Demo Video</a></h3>
+  <a href="https://drive.google.com/file/d/1LeJYfsvmNM7ObHaHFMIJdd2UU866GHOB/view?usp=sharing" target="_blank">
+    <img src="https://img.shields.io/badge/Watch_Demo_Video-FF0000?style=for-the-badge&logo=google-drive&logoColor=white" alt="Watch Demo Video" />
+  </a>
 </div>
 
 <div align="center">
