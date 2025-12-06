@@ -50,7 +50,7 @@
 
 ---
 
-## 📘 About the App
+##  About the App
 
 **LearnLoop** is a React Native + Expo mobile application designed to democratize education through connection.
 
@@ -60,7 +60,7 @@ Users can list skills they can **teach** and skills they want to **learn**. Our 
 
 ---
 
-## 🚀 Features
+##  Features
 
 <table align="center">
   <tr>
@@ -95,7 +95,7 @@ Users can list skills they can **teach** and skills they want to **learn**. Our 
 
 ---
 
-## 🧠 Skill Matching Logic (Working On it)
+## Skill Matching Logic (Working On it)
 
 We don't just match keywords; we match intents. Here is how the **LearnLoop Algorithm** processes connections:
 
